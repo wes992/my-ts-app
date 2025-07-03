@@ -1,15 +1,20 @@
 'use client'
 
-import React from 'react'
+import React, { Suspense } from 'react'
 import { motion } from "framer-motion";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from 'next/image';
 import { CheckIcon } from '@heroicons/react/24/outline';
 import { BookingForm } from '@/components/BookingForm';
+import { useSearchParams } from 'next/navigation';
 
 
-const BookingPage
+const BookingPageContent
   = () => {
+    const searchParams = useSearchParams();
+    const selectedService = searchParams.get('service');
+
+
     const tags = ['Infinite Frameworks',
       'Many Languages',
       'Hosting',
@@ -60,10 +65,32 @@ const BookingPage
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 0 }} animate={{ opacity: 1, y: -50 }} transition={{ delay: .75, duration: 0.5 }} className="form col-span-2 mx-8 justify-self-center p-4 rounded-lg shadow-lg hover:shadow-md bg-(--color-gray-600) max-w-250 text-white" >
           <h1 className="text-3xl font-bold mb-6">Book a Service</h1>
-          <BookingForm />
+          {selectedService && (
+            <div className="mb-4 p-3 bg-blue-600 rounded-lg">
+              <p className="text-sm">Selected Service: <span className="font-semibold">{selectedService}</span></p>
+            </div>
+          )}
+          <BookingForm preSelectedService={selectedService || undefined} />
         </motion.div>
       </main>
     )
   }
+
+const BookingPage = () => {
+  return (
+    <Suspense fallback={
+      <main>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading...</p>
+          </div>
+        </div>
+      </main>
+    }>
+      <BookingPageContent />
+    </Suspense>
+  );
+}
 
 export default BookingPage
