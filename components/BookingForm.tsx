@@ -63,14 +63,6 @@ const BookingForm = ({ preSelectedService }: BookingFormProps) => {
         required
         className="w-full p-2 border rounded"
       />
-      {/* <input
-        type="text"
-        placeholder="Service Requested"
-        value={formData.service}
-        onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-        required
-        className="w-full p-2 border rounded"
-      /> */}
       <select
         value={formData.service}
         onChange={(e) => setFormData({ ...formData, service: e.target.value })}
